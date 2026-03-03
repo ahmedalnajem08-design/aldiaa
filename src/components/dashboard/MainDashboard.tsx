@@ -295,65 +295,14 @@ export function MainDashboard() {
       </button>
 
       {/* Sidebar */}
-      <motion.aside
-        initial={false}
-        animate={{ 
-          x: isMobileMenuOpen ? 0 : (typeof window !== 'undefined' && window.innerWidth < 1024 ? -300 : 0)
-        }}
-        className={`fixed lg:relative h-screen bg-sidebar flex flex-col z-40 shadow-xl w-72 overflow-hidden ${
-          isMobileMenuOpen ? 'block' : 'lg:block hidden'
+      <aside
+        className={`fixed lg:relative lg:flex flex-col h-screen bg-sidebar z-40 shadow-xl w-72 overflow-hidden ${
+          isMobileMenuOpen ? 'flex' : 'hidden lg:flex'
         }`}
       >
-        {/* Logo - ثابت بدون حركة */}
-        <div className="flex-none p-4 border-b border-sidebar-border">
-          <div className="flex items-center justify-center">
-            <div className="flex flex-col items-center">
-              <img 
-                src="/logo.png" 
-                alt="الضيــــــــــاء" 
-                className="w-16 h-16 object-contain"
-                style={{ filter: 'drop-shadow(0 0 10px rgba(255, 215, 0, 0.6))' }}
-              />
-              <span 
-                className="text-lg font-digital text-amber-400 mt-1"
-                style={{ textShadow: '0 0 10px rgba(255, 215, 0, 0.8)' }}
-              >
-                الضيــــــــــاء
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* User Info & Logout - ثابت */}
-        <div className="flex-none p-4 border-b border-sidebar-border bg-sidebar">
-          <div className="flex items-center gap-3 mb-3 px-2">
-            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-              <span className="text-white font-bold">
-                {currentUser?.name?.charAt(0) || 'م'}
-              </span>
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sidebar-foreground font-medium truncate">
-                {currentUser?.name || 'المستخدم'}
-              </p>
-              <p className="text-sidebar-foreground/60 text-xs">
-                {currentUser?.role === 'admin' ? 'مدير' : 'موظف'}
-              </p>
-            </div>
-          </div>
-          <Button
-            variant="ghost"
-            onClick={handleLogout}
-            className="w-full text-sidebar-foreground hover:bg-red-500/20 hover:text-red-400 justify-start gap-2 border border-sidebar-border"
-          >
-            <LogOut className="w-5 h-5" />
-            <span>تسجيل الخروج</span>
-          </Button>
-        </div>
-
         {/* Menu Items - قابل للتمرير */}
-        <div className="flex-1 min-h-0 overflow-y-auto py-4 px-3">
-          <nav className="space-y-1">
+        <div className="flex-1 overflow-y-auto overflow-x-hidden">
+          <nav className="p-3 space-y-1">
             {sidebarItems.map((item) => (
               <SidebarItemComponent
                 key={item.id}
@@ -366,7 +315,19 @@ export function MainDashboard() {
             ))}
           </nav>
         </div>
-      </motion.aside>
+
+        {/* Logout Button - صغير في الركن */}
+        <div className="flex-shrink-0 p-2 border-t border-sidebar-border">
+          <Button
+            variant="ghost"
+            onClick={handleLogout}
+            className="w-full text-sidebar-foreground/70 hover:bg-red-500/20 hover:text-red-400 justify-center gap-1.5 h-8 text-xs"
+          >
+            <LogOut className="w-3.5 h-3.5" />
+            <span>خروج</span>
+          </Button>
+        </div>
+      </aside>
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col min-h-screen overflow-hidden">
