@@ -50,11 +50,12 @@ export async function POST(request: NextRequest) {
     // توليد ID فريد
     const userId = 'user-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9)
 
-    // إنشاء المستخدم
+    // إنشاء المستخدم - إضافة username (استخدام phone أو name)
+    const username = phone || name || userId
     await client.query(
-      `INSERT INTO "User" (id, name, phone, password, role, avatar, "branchId", "isActive", "createdAt", "updatedAt")
-       VALUES ($1, $2, $3, $4, $5, $6, $7, true, NOW(), NOW())`,
-      [userId, name, phone || null, hashedPassword, role || 'user', avatar || null, branchId || null]
+      `INSERT INTO "User" (id, name, username, phone, password, role, avatar, "branchId", "isActive", "createdAt", "updatedAt")
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, true, NOW(), NOW())`,
+      [userId, name, username, phone || null, hashedPassword, role || 'user', avatar || null, branchId || null]
     )
 
     // إنشاء الصلاحيات
